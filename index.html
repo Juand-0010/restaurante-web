@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brasa Norte | Restaurante y pedidos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="#inicio" aria-label="Brasa Norte inicio">
+          <span class="brand-mark">BN</span>
+          <span>
+            <strong>Brasa Norte</strong>
+            <small>Cocina artesanal</small>
+          </span>
+        </a>
+        <div class="nav-links">
+          <a href="#menu">Menu</a>
+          <a href="#pedido">Pedido</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <button class="cart-toggle" id="openCart" type="button" aria-label="Abrir carrito">
+          <span class="cart-icon" aria-hidden="true">C</span>
+          <span id="cartCount">0</span>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-copy">
+          <p class="eyebrow">Pedidos en linea</p>
+          <h1>Brasa Norte</h1>
+          <p>
+            Parrilla, bowls frescos y postres hechos al momento. Arma tu carrito,
+            confirma tus datos y mira una simulacion completa del pedido.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#menu">Ver menu</a>
+            <a class="secondary-link" href="#pedido">Simular pedido</a>
+          </div>
+        </div>
+        <div class="hero-plate" aria-hidden="true">
+          <img src="assets/hero-dish.svg" alt="" />
+        </div>
+      </section>
+
+      <section class="info-band" aria-label="Datos destacados">
+        <div>
+          <strong>30-45 min</strong>
+          <span>Entrega estimada</span>
+        </div>
+        <div>
+          <strong>4.8/5</strong>
+          <span>Clientes felices</span>
+        </div>
+        <div>
+          <strong>$6.000</strong>
+          <span>Envio local</span>
+        </div>
+      </section>
+
+      <section class="menu-section" id="menu">
+        <div class="section-heading">
+          <p class="eyebrow">Menu destacado</p>
+          <h2>Elige tus favoritos</h2>
+        </div>
+        <div class="filters" role="tablist" aria-label="Categorias del menu">
+          <button class="filter active" type="button" data-category="todos">Todos</button>
+          <button class="filter" type="button" data-category="principales">Principales</button>
+          <button class="filter" type="button" data-category="bebidas">Bebidas</button>
+          <button class="filter" type="button" data-category="postres">Postres</button>
+        </div>
+        <div class="menu-grid" id="menuGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="order-section" id="pedido">
+        <div class="order-copy">
+          <p class="eyebrow">Checkout simulado</p>
+          <h2>Finaliza sin pagar de verdad</h2>
+          <p>
+            El formulario genera un numero de orden, muestra el resumen y avanza
+            por estados de cocina, despacho y entrega para probar la experiencia.
+          </p>
+        </div>
+
+        <form class="checkout-form" id="checkoutForm">
+          <label>
+            Nombre
+            <input id="customerName" name="customerName" type="text" placeholder="Tu nombre" required />
+          </label>
+          <label>
+            Direccion
+            <input id="customerAddress" name="customerAddress" type="text" placeholder="Calle, barrio, ciudad" required />
+          </label>
+          <label>
+            Metodo de entrega
+            <select id="deliveryMethod" name="deliveryMethod">
+              <option value="domicilio">Domicilio</option>
+              <option value="recoger">Recoger en restaurante</option>
+            </select>
+          </label>
+          <label>
+            Nota para cocina
+            <textarea id="orderNote" name="orderNote" rows="3" placeholder="Sin cebolla, extra salsa..."></textarea>
+          </label>
+          <button class="submit-order" type="submit">Simular pedido</button>
+        </form>
+      </section>
+    </main>
+
+    <aside class="cart-panel" id="cartPanel" aria-label="Carrito de compras" aria-hidden="true">
+      <div class="cart-backdrop" id="closeCartBackdrop"></div>
+      <div class="cart-drawer">
+        <div class="cart-head">
+          <div>
+            <p class="eyebrow">Tu pedido</p>
+            <h2>Carrito</h2>
+          </div>
+          <button class="icon-button" id="closeCart" type="button" aria-label="Cerrar carrito">X</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-summary">
+          <div>
+            <span>Subtotal</span>
+            <strong id="subtotal">$0</strong>
+          </div>
+          <div>
+            <span>Envio</span>
+            <strong id="deliveryFee">$0</strong>
+          </div>
+          <div class="total-row">
+            <span>Total</span>
+            <strong id="total">$0</strong>
+          </div>
+          <a class="checkout-link" href="#pedido" id="goCheckout">Ir a checkout</a>
+          <button class="clear-cart" id="clearCart" type="button">Vaciar carrito</button>
+        </div>
+      </div>
+    </aside>
+
+    <dialog class="order-modal" id="orderModal">
+      <div class="modal-content">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Pedido simulado</p>
+            <h2 id="orderTitle">Orden lista</h2>
+          </div>
+          <button class="icon-button" id="closeModal" type="button" aria-label="Cerrar resultado">X</button>
+        </div>
+        <div id="orderSummary"></div>
+        <ol class="status-list" id="statusList">
+          <li class="active">Recibido</li>
+          <li>En cocina</li>
+          <li>En camino</li>
+          <li>Entregado</li>
+        </ol>
+      </div>
+    </dialog>
+
+    <footer class="footer" id="contacto">
+      <div>
+        <strong>Brasa Norte</strong>
+        <span>Cra. 18 #42-10, Bogota</span>
+      </div>
+      <div>
+        <span>Abierto todos los dias</span>
+        <span>12:00 p.m. - 10:00 p.m.</span>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
