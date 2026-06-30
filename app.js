@@ -46,6 +46,166 @@ const menuItems = [
     price: 14500,
     image: "assets/dessert.svg",
     description: "Bizcocho humedo, crema batida de vainilla y crocante de cacao."
+  },
+  {
+    id: "costillas",
+    name: "Costillas BBQ ahumadas",
+    category: "principales",
+    price: 42000,
+    image: "assets/costillas.svg",
+    description: "Costillas de cerdo glaseadas en salsa BBQ ahumada, papas criollas y ensalada de repollo."
+  },
+  {
+    id: "salmon",
+    name: "Salmon a la parrilla",
+    category: "principales",
+    price: 45000,
+    image: "assets/salmon.svg",
+    description: "Salmon a la parrilla con costra de hierbas, pure de auyama y vegetales salteados."
+  },
+  {
+    id: "lomo",
+    name: "Lomo al trapo",
+    category: "principales",
+    price: 48000,
+    image: "assets/lomo.svg",
+    description: "Lomo de res cocido al trapo con sal de hierbas, papas doradas y chimichurri."
+  },
+  {
+    id: "arepa",
+    name: "Arepa rellena de queso y carne",
+    category: "principales",
+    price: 26000,
+    image: "assets/arepa.svg",
+    description: "Arepa de maiz blanco rellena de queso campesino y carne desmechada, con suero costeno."
+  },
+  {
+    id: "carneasada",
+    name: "Carne asada a la llanera",
+    category: "principales",
+    price: 39000,
+    image: "assets/carneasada.svg",
+    description: "Carne de res asada al carbon, yuca frita, ensalada fresca y aji casero."
+  },
+  {
+    id: "trucha",
+    name: "Trucha a la plancha",
+    category: "principales",
+    price: 36000,
+    image: "assets/trucha.svg",
+    description: "Trucha fresca a la plancha con limon, arroz de coco y patacones."
+  },
+  {
+    id: "hamburguesa",
+    name: "Hamburguesa Brasa Norte",
+    category: "principales",
+    price: 32000,
+    image: "assets/hamburguesa.svg",
+    description: "Hamburguesa de carne angus, queso cheddar, tocineta y salsa de la casa con papas."
+  },
+  {
+    id: "fajitas",
+    name: "Fajitas mixtas",
+    category: "principales",
+    price: 37000,
+    image: "assets/fajitas.svg",
+    description: "Tiras de pollo y res salteadas con pimentones, cebolla y tortillas de maiz."
+  },
+  {
+    id: "jugomora",
+    name: "Jugo de mora",
+    category: "bebidas",
+    price: 8000,
+    image: "assets/jugomora.svg",
+    description: "Mora fresca licuada con agua o leche, endulzada al gusto."
+  },
+  {
+    id: "te",
+    name: "Te helado de frutos rojos",
+    category: "bebidas",
+    price: 9000,
+    image: "assets/te.svg",
+    description: "Te negro infusionado en frio con frutos rojos y un toque de menta."
+  },
+  {
+    id: "cerveza",
+    name: "Cerveza artesanal",
+    category: "bebidas",
+    price: 12000,
+    image: "assets/cerveza.svg",
+    description: "Cerveza artesanal tipo ale, dorada y refrescante, servida bien fria."
+  },
+  {
+    id: "agualimon",
+    name: "Agua de panela con limon",
+    category: "bebidas",
+    price: 7000,
+    image: "assets/agualimon.svg",
+    description: "Agua de panela fria con limon natural, la bebida tradicional de la casa."
+  },
+  {
+    id: "malteada",
+    name: "Malteada de vainilla",
+    category: "bebidas",
+    price: 11000,
+    image: "assets/malteada.svg",
+    description: "Malteada cremosa de vainilla con un toque de canela."
+  },
+  {
+    id: "soda",
+    name: "Soda italiana de maracuya",
+    category: "bebidas",
+    price: 9500,
+    image: "assets/soda.svg",
+    description: "Soda italiana con jarabe de maracuya y un toque de limon."
+  },
+  {
+    id: "flan",
+    name: "Flan de cafe",
+    category: "postres",
+    price: 13000,
+    image: "assets/flan.svg",
+    description: "Flan casero de cafe con caramelo suave."
+  },
+  {
+    id: "cheesecake",
+    name: "Cheesecake de mora",
+    category: "postres",
+    price: 15500,
+    image: "assets/cheesecake.svg",
+    description: "Cheesecake cremoso con cobertura de mora silvestre."
+  },
+  {
+    id: "helado",
+    name: "Helado artesanal de vainilla",
+    category: "postres",
+    price: 9000,
+    image: "assets/helado.svg",
+    description: "Dos bolas de helado artesanal de vainilla con barquillo."
+  },
+  {
+    id: "brownie",
+    name: "Brownie con nuez",
+    category: "postres",
+    price: 12500,
+    image: "assets/brownie.svg",
+    description: "Brownie de chocolate tibio con nueces y helado de vainilla."
+  },
+  {
+    id: "tresleches",
+    name: "Torta tres leches",
+    category: "postres",
+    price: 14000,
+    image: "assets/tresleches.svg",
+    description: "Torta esponjosa banada en tres leches con un toque de canela."
+  },
+  {
+    id: "arrozdeleche",
+    name: "Arroz con leche",
+    category: "postres",
+    price: 8500,
+    image: "assets/arrozdeleche.svg",
+    description: "Arroz con leche cremoso con canela y pasas."
   }
 ];
 
@@ -65,7 +225,17 @@ const subtotalEl = document.querySelector("#subtotal");
 const deliveryFeeEl = document.querySelector("#deliveryFee");
 const totalEl = document.querySelector("#total");
 const checkoutForm = document.querySelector("#checkoutForm");
+const customerName = document.querySelector("#customerName");
+const methodField = document.querySelector("#methodField");
 const deliveryMethod = document.querySelector("#deliveryMethod");
+const addressField = document.querySelector("#addressField");
+const customerAddress = document.querySelector("#customerAddress");
+const tableField = document.querySelector("#tableField");
+const tableNumber = document.querySelector("#tableNumber");
+const noteField = document.querySelector("#noteField");
+const submitOrderButton = document.querySelector("#submitOrderButton");
+const confirmModal = document.querySelector("#confirmModal");
+const confirmSummary = document.querySelector("#confirmSummary");
 const orderModal = document.querySelector("#orderModal");
 const orderSummary = document.querySelector("#orderSummary");
 const orderTitle = document.querySelector("#orderTitle");
@@ -74,9 +244,21 @@ const statusList = document.querySelector("#statusList");
 let cart = JSON.parse(localStorage.getItem("brasaNorteCart") || "{}");
 let activeCategory = "todos";
 let statusTimer = null;
+let pendingOrderData = null;
+let deliveryFieldsUnlocked = false;
 
 function formatPrice(value) {
   return currency.format(value).replace(/\s/g, " ");
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
 }
 
 function saveCart() {
@@ -88,8 +270,8 @@ function renderMenu() {
     ? menuItems
     : menuItems.filter((item) => item.category === activeCategory);
 
-  menuGrid.innerHTML = visibleItems.map((item) => `
-    <article class="menu-card">
+  menuGrid.innerHTML = visibleItems.map((item, index) => `
+    <article class="menu-card" style="animation-delay: ${index * 70}ms">
       <img src="${item.image}" alt="${item.name}" />
       <div class="menu-card-body">
         <div>
@@ -105,6 +287,25 @@ function renderMenu() {
   `).join("");
 }
 
+function initScrollReveal() {
+  const revealEls = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window) || !revealEls.length) {
+    revealEls.forEach((el) => el.classList.add("in-view"));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealEls.forEach((el) => observer.observe(el));
+}
+
 function getCartEntries() {
   return Object.entries(cart)
     .map(([id, qty]) => ({ ...menuItems.find((item) => item.id === id), qty }))
@@ -117,6 +318,44 @@ function getSubtotal() {
 
 function getDeliveryCost() {
   return deliveryMethod.value === "domicilio" && getSubtotal() > 0 ? deliveryPrice : 0;
+}
+
+function updateDeliveryFields() {
+  const isDomicilio = deliveryMethod.value === "domicilio";
+  const isMesa = deliveryMethod.value === "mesa";
+
+  addressField.hidden = !deliveryFieldsUnlocked || !isDomicilio;
+  customerAddress.required = isDomicilio;
+  customerAddress.disabled = !isDomicilio;
+
+  tableField.hidden = !deliveryFieldsUnlocked || !isMesa;
+  tableNumber.required = isMesa;
+  tableNumber.disabled = !isMesa;
+}
+
+function revealNoteField() {
+  noteField.hidden = false;
+  submitOrderButton.hidden = false;
+  submitOrderButton.disabled = false;
+}
+
+function handleDeliveryMethodChange() {
+  deliveryFieldsUnlocked = true;
+  updateDeliveryFields();
+  if (deliveryMethod.value === "recoger") revealNoteField();
+}
+
+function revealMethodField() {
+  if (!customerName.value.trim()) return;
+  methodField.hidden = false;
+  handleDeliveryMethodChange();
+}
+
+function describeDelivery(formData) {
+  const method = formData.get("deliveryMethod");
+  if (method === "domicilio") return `domicilio en ${escapeHtml(formData.get("customerAddress"))}`;
+  if (method === "mesa") return `la mesa ${escapeHtml(formData.get("tableNumber"))}`;
+  return "recoger en restaurante";
 }
 
 function renderCart() {
@@ -158,6 +397,13 @@ function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
   saveCart();
   renderCart();
+  bumpCartCount();
+}
+
+function bumpCartCount() {
+  cartCount.classList.remove("bump");
+  void cartCount.offsetWidth;
+  cartCount.classList.add("bump");
 }
 
 function changeQty(id, amount) {
@@ -167,17 +413,56 @@ function changeQty(id, amount) {
   renderCart();
 }
 
+let lastFocusedElement = null;
+
+function getFocusableElements(container) {
+  return [...container.querySelectorAll('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+    .filter((el) => el.offsetParent !== null);
+}
+
+function trapFocus(event) {
+  if (event.key !== "Tab") return;
+  const focusable = getFocusableElements(cartPanel);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
 function openCart() {
+  lastFocusedElement = document.activeElement;
   cartPanel.classList.add("open");
   cartPanel.setAttribute("aria-hidden", "false");
+  document.querySelector("#openCart").setAttribute("aria-expanded", "true");
+  document.addEventListener("keydown", handleCartKeydown);
+  const closeButton = document.querySelector("#closeCart");
+  closeButton.focus();
 }
 
 function closeCart() {
   cartPanel.classList.remove("open");
   cartPanel.setAttribute("aria-hidden", "true");
+  document.querySelector("#openCart").setAttribute("aria-expanded", "false");
+  document.removeEventListener("keydown", handleCartKeydown);
+  if (lastFocusedElement) lastFocusedElement.focus();
 }
 
-function simulateOrder(formData) {
+function handleCartKeydown(event) {
+  if (event.key === "Escape") {
+    closeCart();
+    return;
+  }
+  trapFocus(event);
+}
+
+function placeOrder(formData) {
   const entries = getCartEntries();
   const subtotal = getSubtotal();
   const delivery = getDeliveryCost();
@@ -186,10 +471,10 @@ function simulateOrder(formData) {
 
   orderTitle.textContent = `Orden #${orderNumber}`;
   orderSummary.innerHTML = `
-    <strong>${formData.get("customerName")}</strong>, recibimos tu pedido para
-    <strong>${formData.get("deliveryMethod") === "domicilio" ? "domicilio" : "recoger en restaurante"}</strong>.<br>
+    <strong>${escapeHtml(formData.get("customerName"))}</strong>, recibimos tu pedido para
+    <strong>${describeDelivery(formData)}</strong>.<br>
     ${itemList}<br>
-    <strong>Total simulado: ${formatPrice(subtotal + delivery)}</strong>
+    <strong>Total del pedido: ${formatPrice(subtotal + delivery)}</strong>
   `;
 
   [...statusList.children].forEach((item, index) => {
@@ -250,7 +535,20 @@ document.querySelector("#clearCart").addEventListener("click", () => {
   renderCart();
 });
 
-deliveryMethod.addEventListener("change", renderCart);
+customerName.addEventListener("input", revealMethodField);
+
+deliveryMethod.addEventListener("change", () => {
+  handleDeliveryMethodChange();
+  renderCart();
+});
+
+customerAddress.addEventListener("input", () => {
+  if (deliveryMethod.value === "domicilio" && customerAddress.value.trim()) revealNoteField();
+});
+
+tableNumber.addEventListener("input", () => {
+  if (deliveryMethod.value === "mesa" && tableNumber.value.trim()) revealNoteField();
+});
 
 checkoutForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -258,7 +556,33 @@ checkoutForm.addEventListener("submit", (event) => {
     openCart();
     return;
   }
-  simulateOrder(new FormData(checkoutForm));
+  if (!checkoutForm.reportValidity()) return;
+
+  pendingOrderData = new FormData(checkoutForm);
+  const note = pendingOrderData.get("orderNote");
+  confirmSummary.innerHTML = `
+    <dl class="confirm-list">
+      <div><dt>Nombre</dt><dd>${escapeHtml(pendingOrderData.get("customerName"))}</dd></div>
+      <div><dt>Entrega</dt><dd>${describeDelivery(pendingOrderData)}</dd></div>
+      ${note ? `<div><dt>Nota</dt><dd>${escapeHtml(note)}</dd></div>` : ""}
+    </dl>
+  `;
+  confirmModal.showModal();
+});
+
+document.querySelector("#editOrder").addEventListener("click", () => {
+  confirmModal.close();
+});
+
+document.querySelector("#closeConfirm").addEventListener("click", () => {
+  confirmModal.close();
+});
+
+document.querySelector("#confirmOrderButton").addEventListener("click", () => {
+  if (!pendingOrderData) return;
+  confirmModal.close();
+  placeOrder(pendingOrderData);
+  pendingOrderData = null;
 });
 
 document.querySelector("#closeModal").addEventListener("click", () => {
@@ -266,5 +590,7 @@ document.querySelector("#closeModal").addEventListener("click", () => {
   orderModal.close();
 });
 
+updateDeliveryFields();
 renderMenu();
 renderCart();
+initScrollReveal();

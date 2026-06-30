@@ -1,6 +1,6 @@
 # Brasa Norte
 
-Pagina web estatica para un restaurante con menu, carrito de compras y simulacion de pedido.
+Pagina web estatica para un restaurante con menu, carrito de compras y confirmacion de pedido en linea.
 
 ## Como abrirla
 
@@ -13,7 +13,7 @@ Abre `index.html` directamente en el navegador.
 - Carrito guardado en `localStorage`.
 - Calculo de subtotal, envio y total.
 - Formulario de checkout.
-- Simulacion de pedido con numero de orden y estados.
+- Confirmacion de pedido con numero de orden y seguimiento de estados.
 
 ## Publicacion en GitHub
 

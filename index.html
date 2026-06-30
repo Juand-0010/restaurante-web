@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Brasa Norte | Restaurante y pedidos</title>
+    <meta name="description" content="Brasa Norte: parrilla, bowls frescos y postres artesanales en Bogota. Arma tu carrito, confirma tus datos y haz tu pedido en linea." />
+    <meta name="theme-color" content="#c83a2a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Brasa Norte | Restaurante y pedidos" />
+    <meta property="og:description" content="Parrilla, bowls frescos y postres hechos al momento. Arma tu carrito y haz tu pedido en linea." />
+    <meta property="og:image" content="assets/hero-dish.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -21,7 +28,7 @@
           <a href="#pedido">Pedido</a>
           <a href="#contacto">Contacto</a>
         </div>
-        <button class="cart-toggle" id="openCart" type="button" aria-label="Abrir carrito">
+        <button class="cart-toggle" id="openCart" type="button" aria-label="Abrir carrito" aria-expanded="false">
           <span class="cart-icon" aria-hidden="true">C</span>
           <span id="cartCount">0</span>
         </button>
@@ -30,24 +37,24 @@
 
     <main>
       <section class="hero" id="inicio">
-        <div class="hero-copy">
+        <div class="hero-copy reveal">
           <p class="eyebrow">Pedidos en linea</p>
           <h1>Brasa Norte</h1>
           <p>
             Parrilla, bowls frescos y postres hechos al momento. Arma tu carrito,
-            confirma tus datos y mira una simulacion completa del pedido.
+            confirma tus datos y haz seguimiento de tu pedido en tiempo real.
           </p>
           <div class="hero-actions">
             <a class="primary-link" href="#menu">Ver menu</a>
-            <a class="secondary-link" href="#pedido">Simular pedido</a>
+            <a class="secondary-link" href="#pedido">Hacer pedido</a>
           </div>
         </div>
-        <div class="hero-plate" aria-hidden="true">
+        <div class="hero-plate reveal" aria-hidden="true">
           <img src="assets/hero-dish.svg" alt="" />
         </div>
       </section>
 
-      <section class="info-band" aria-label="Datos destacados">
+      <section class="info-band reveal" aria-label="Datos destacados">
         <div>
           <strong>30-45 min</strong>
           <span>Entrega estimada</span>
@@ -63,7 +70,7 @@
       </section>
 
       <section class="menu-section" id="menu">
-        <div class="section-heading">
+        <div class="section-heading reveal">
           <p class="eyebrow">Menu destacado</p>
           <h2>Elige tus favoritos</h2>
         </div>
@@ -77,36 +84,41 @@
       </section>
 
       <section class="order-section" id="pedido">
-        <div class="order-copy">
-          <p class="eyebrow">Checkout simulado</p>
-          <h2>Finaliza sin pagar de verdad</h2>
+        <div class="order-copy reveal">
+          <p class="eyebrow">Checkout</p>
+          <h2>Finaliza tu pedido en segundos</h2>
           <p>
-            El formulario genera un numero de orden, muestra el resumen y avanza
-            por estados de cocina, despacho y entrega para probar la experiencia.
+            Completa tus datos y recibe la confirmacion al instante, con el
+            numero de tu orden y el seguimiento del estado hasta que llegue a tu mesa o a tu puerta.
           </p>
         </div>
 
-        <form class="checkout-form" id="checkoutForm">
+        <form class="checkout-form reveal" id="checkoutForm">
           <label>
             Nombre
             <input id="customerName" name="customerName" type="text" placeholder="Tu nombre" required />
           </label>
-          <label>
-            Direccion
-            <input id="customerAddress" name="customerAddress" type="text" placeholder="Calle, barrio, ciudad" required />
-          </label>
-          <label>
+          <label id="methodField" hidden>
             Metodo de entrega
             <select id="deliveryMethod" name="deliveryMethod">
               <option value="domicilio">Domicilio</option>
+              <option value="mesa">Comer en el restaurante (mesa)</option>
               <option value="recoger">Recoger en restaurante</option>
             </select>
           </label>
-          <label>
+          <label id="addressField" hidden>
+            Direccion
+            <input id="customerAddress" name="customerAddress" type="text" placeholder="Calle, barrio, ciudad" required />
+          </label>
+          <label id="tableField" hidden>
+            Numero de mesa
+            <input id="tableNumber" name="tableNumber" type="number" min="1" max="40" placeholder="Ej: 12" />
+          </label>
+          <label id="noteField" hidden>
             Nota para cocina
             <textarea id="orderNote" name="orderNote" rows="3" placeholder="Sin cebolla, extra salsa..."></textarea>
           </label>
-          <button class="submit-order" type="submit">Simular pedido</button>
+          <button class="submit-order" type="submit" id="submitOrderButton" hidden disabled>Revisar pedido</button>
         </form>
       </section>
     </main>
@@ -141,16 +153,33 @@
       </div>
     </aside>
 
+    <dialog class="order-modal" id="confirmModal">
+      <div class="modal-content">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Verifica tu pedido</p>
+            <h2>Confirma tus datos</h2>
+          </div>
+          <button class="icon-button" id="closeConfirm" type="button" aria-label="Cerrar verificacion">X</button>
+        </div>
+        <div id="confirmSummary" class="dialog-summary"></div>
+        <div class="confirm-actions">
+          <button class="secondary-link" id="editOrder" type="button">Editar datos</button>
+          <button class="submit-order" id="confirmOrderButton" type="button">Confirmar y enviar</button>
+        </div>
+      </div>
+    </dialog>
+
     <dialog class="order-modal" id="orderModal">
       <div class="modal-content">
         <div class="modal-head">
           <div>
-            <p class="eyebrow">Pedido simulado</p>
+            <p class="eyebrow">Pedido confirmado</p>
             <h2 id="orderTitle">Orden lista</h2>
           </div>
           <button class="icon-button" id="closeModal" type="button" aria-label="Cerrar resultado">X</button>
         </div>
-        <div id="orderSummary"></div>
+        <div id="orderSummary" class="dialog-summary"></div>
         <ol class="status-list" id="statusList">
           <li class="active">Recibido</li>
           <li>En cocina</li>
