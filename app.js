@@ -292,6 +292,10 @@ function renderMenu() {
     normalize(item.name + " " + item.description).includes(normalize(searchTerm)));
   document.querySelector("#resultCount").textContent = `${visibleItems.length} opciones`;
 
+  if (!visibleItems.length) {
+    menuGrid.innerHTML = '<p class="empty-cart">No encontramos coincidencias. Prueba otra búsqueda o categoría.</p>';
+    return;
+  }
   menuGrid.innerHTML = visibleItems.map((item, index) => `
     <article class="menu-card" style="animation-delay: ${index * 70}ms">
       <img src="${item.image}" alt="${item.name}" loading="lazy" width="400" height="260" />
@@ -497,6 +501,7 @@ function handleCartKeydown(event) {
 
 function placeOrder(formData) {
   const entries = getCartEntries();
+  if (!entries.length) return;
   const subtotal = getSubtotal();
   const delivery = getDeliveryCost();
   const orderNumber = Math.floor(10000 + Math.random() * 90000);
