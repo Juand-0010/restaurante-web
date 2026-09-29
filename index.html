@@ -4,16 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Brasa Norte | Restaurante y pedidos</title>
-    <meta name="description" content="Brasa Norte: parrilla, bowls frescos y postres artesanales en Bogota. Arma tu carrito, confirma tus datos y haz tu pedido en linea." />
+    <meta name="description" content="Demo de restaurante: catálogo, carrito y checkout simulado en JavaScript." />
     <meta name="theme-color" content="#c83a2a" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Brasa Norte | Restaurante y pedidos" />
-    <meta property="og:description" content="Parrilla, bowls frescos y postres hechos al momento. Arma tu carrito y haz tu pedido en linea." />
+    <meta property="og:description" content="Explora un catálogo de restaurante y prueba un flujo de compra simulado." />
     <meta property="og:image" content="assets/hero-dish.svg" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#menu">Saltar al menú</a>
+    <p class="demo-banner">Demo de portafolio · No procesa pagos ni envía pedidos. Usa datos de ejemplo.</p>
     <header class="site-header">
       <nav class="nav" aria-label="Principal">
         <a class="brand" href="#inicio" aria-label="Brasa Norte inicio">
@@ -42,7 +44,7 @@
           <h1>Brasa Norte</h1>
           <p>
             Parrilla, bowls frescos y postres hechos al momento. Arma tu carrito,
-            confirma tus datos y haz seguimiento de tu pedido en tiempo real.
+            explora un flujo de compra simulado, desde la selección hasta el resumen.
           </p>
           <div class="hero-actions">
             <a class="primary-link" href="#menu">Ver menu</a>
@@ -56,16 +58,16 @@
 
       <section class="info-band reveal" aria-label="Datos destacados">
         <div>
-          <strong>30-45 min</strong>
-          <span>Entrega estimada</span>
+          <strong>26 opciones</strong>
+          <span>Explora el menú</span>
         </div>
         <div>
-          <strong>4.8/5</strong>
-          <span>Clientes felices</span>
+          <strong>3 modalidades</strong>
+          <span>Domicilio, mesa o recogida</span>
         </div>
         <div>
           <strong>$6.000</strong>
-          <span>Envio local</span>
+          <span>Envío de ejemplo</span>
         </div>
       </section>
 
@@ -74,12 +76,14 @@
           <p class="eyebrow">Menu destacado</p>
           <h2>Elige tus favoritos</h2>
         </div>
-        <div class="filters" role="tablist" aria-label="Categorias del menu">
+        <div class="filters" role="group" aria-label="Categorias del menu">
           <button class="filter active" type="button" data-category="todos">Todos</button>
           <button class="filter" type="button" data-category="principales">Principales</button>
           <button class="filter" type="button" data-category="bebidas">Bebidas</button>
           <button class="filter" type="button" data-category="postres">Postres</button>
         </div>
+        <label class="menu-search" for="menuSearch">Buscar en el menú<input id="menuSearch" type="search" placeholder="Plato o ingrediente…" maxlength="100"></label>
+        <p id="resultCount" role="status"></p>
         <div class="menu-grid" id="menuGrid" aria-live="polite"></div>
       </section>
 
@@ -96,7 +100,7 @@
         <form class="checkout-form reveal" id="checkoutForm">
           <label>
             Nombre
-            <input id="customerName" name="customerName" type="text" placeholder="Tu nombre" required />
+            <input id="customerName" name="customerName" type="text" placeholder="Nombre de ejemplo" maxlength="80" autocomplete="off" required />
           </label>
           <label id="methodField" hidden>
             Metodo de entrega
@@ -108,7 +112,7 @@
           </label>
           <label id="addressField" hidden>
             Direccion
-            <input id="customerAddress" name="customerAddress" type="text" placeholder="Calle, barrio, ciudad" required />
+            <input id="customerAddress" name="customerAddress" type="text" placeholder="Dirección de ejemplo" maxlength="200" autocomplete="off" required />
           </label>
           <label id="tableField" hidden>
             Numero de mesa
@@ -116,14 +120,14 @@
           </label>
           <label id="noteField" hidden>
             Nota para cocina
-            <textarea id="orderNote" name="orderNote" rows="3" placeholder="Sin cebolla, extra salsa..."></textarea>
+            <textarea id="orderNote" name="orderNote" rows="3" maxlength="500" placeholder="Sin cebolla, extra salsa..."></textarea>
           </label>
           <button class="submit-order" type="submit" id="submitOrderButton" hidden disabled>Revisar pedido</button>
         </form>
       </section>
     </main>
 
-    <aside class="cart-panel" id="cartPanel" aria-label="Carrito de compras" aria-hidden="true">
+    <aside role="dialog" aria-modal="true" class="cart-panel" id="cartPanel" aria-label="Carrito de compras" aria-hidden="true">
       <div class="cart-backdrop" id="closeCartBackdrop"></div>
       <div class="cart-drawer">
         <div class="cart-head">
@@ -153,7 +157,7 @@
       </div>
     </aside>
 
-    <dialog class="order-modal" id="confirmModal">
+    <dialog class="order-modal" id="confirmModal" aria-label="Revisar simulación">
       <div class="modal-content">
         <div class="modal-head">
           <div>
@@ -165,16 +169,16 @@
         <div id="confirmSummary" class="dialog-summary"></div>
         <div class="confirm-actions">
           <button class="secondary-link" id="editOrder" type="button">Editar datos</button>
-          <button class="submit-order" id="confirmOrderButton" type="button">Confirmar y enviar</button>
+          <button class="submit-order" id="confirmOrderButton" type="button">Confirmar simulación</button>
         </div>
       </div>
     </dialog>
 
-    <dialog class="order-modal" id="orderModal">
+    <dialog class="order-modal" id="orderModal" aria-labelledby="orderTitle">
       <div class="modal-content">
         <div class="modal-head">
           <div>
-            <p class="eyebrow">Pedido confirmado</p>
+            <p class="eyebrow">Simulación completada</p>
             <h2 id="orderTitle">Orden lista</h2>
           </div>
           <button class="icon-button" id="closeModal" type="button" aria-label="Cerrar resultado">X</button>
@@ -192,14 +196,16 @@
     <footer class="footer" id="contacto">
       <div>
         <strong>Brasa Norte</strong>
-        <span>Cra. 18 #42-10, Bogota</span>
+        <span>Proyecto de demostración</span>
       </div>
       <div>
-        <span>Abierto todos los dias</span>
-        <span>12:00 p.m. - 10:00 p.m.</span>
+        <span>Desarrollado por Juan Diego García</span>
+        <span>Sin conexión con un restaurante real</span>
       </div>
     </footer>
 
+    <p id="feedback" role="status" class="feedback"></p>
+    <noscript>Activa JavaScript para explorar el menú y usar el carrito.</noscript>
     <script src="app.js"></script>
   </body>
 </html>
