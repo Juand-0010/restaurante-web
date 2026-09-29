@@ -251,7 +251,7 @@ a {
 .hero::before {
   content: "";
   position: absolute;
-  inset: -10% -10% auto -10%;
+  inset: -10% 0 auto 0;
   z-index: -1;
   height: 480px;
   background:
