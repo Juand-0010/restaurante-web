@@ -241,7 +241,26 @@ const orderSummary = document.querySelector("#orderSummary");
 const orderTitle = document.querySelector("#orderTitle");
 const statusList = document.querySelector("#statusList");
 
-let cart = JSON.parse(localStorage.getItem("brasaNorteCart") || "{}");
+function sanitizeCart(value) {
+  const result = {};
+  if (!value || typeof value !== "object" || Array.isArray(value)) return result;
+  for (const item of menuItems) {
+    const qty = value[item.id];
+    if (Number.isInteger(qty) && qty > 0) result[item.id] = Math.min(qty, 99);
+  }
+  return result;
+}
+
+function loadCart() {
+  try { return sanitizeCart(JSON.parse(localStorage.getItem("brasaNorteCart") || "{}")); }
+  catch { return {}; }
+}
+
+let cart = loadCart();
+let searchTerm = "";
+function announce(message) {
+  document.querySelector("#feedback").textContent = message;
+}
 let activeCategory = "todos";
 let statusTimer = null;
 let pendingOrderData = null;
@@ -262,7 +281,8 @@ function escapeHtml(value) {
 }
 
 function saveCart() {
-  localStorage.setItem("brasaNorteCart", JSON.stringify(cart));
+  try { localStorage.setItem("brasaNorteCart", JSON.stringify(cart)); }
+  catch { announce("No se pudo guardar el carrito. Puedes continuar en esta pestaña."); }
 }
 
 function renderMenu() {
@@ -272,7 +292,7 @@ function renderMenu() {
 
   menuGrid.innerHTML = visibleItems.map((item, index) => `
     <article class="menu-card" style="animation-delay: ${index * 70}ms">
-      <img src="${item.image}" alt="${item.name}" />
+      <img src="${item.image}" alt="${item.name}" loading="lazy" width="400" height="260" />
       <div class="menu-card-body">
         <div>
           <h3>${item.name}</h3>
@@ -280,7 +300,7 @@ function renderMenu() {
         </div>
         <div class="card-bottom">
           <span class="price">${formatPrice(item.price)}</span>
-          <button class="add-button" type="button" data-add="${item.id}">Agregar</button>
+          <button class="add-button" type="button" data-add="${item.id}" aria-label="Agregar ${item.name}">Agregar</button>
         </div>
       </div>
     </article>
@@ -325,12 +345,12 @@ function updateDeliveryFields() {
   const isMesa = deliveryMethod.value === "mesa";
 
   addressField.hidden = !deliveryFieldsUnlocked || !isDomicilio;
-  customerAddress.required = isDomicilio;
-  customerAddress.disabled = !isDomicilio;
+  customerAddress.required = deliveryFieldsUnlocked && isDomicilio;
+  customerAddress.disabled = !deliveryFieldsUnlocked || !isDomicilio;
 
   tableField.hidden = !deliveryFieldsUnlocked || !isMesa;
-  tableNumber.required = isMesa;
-  tableNumber.disabled = !isMesa;
+  tableNumber.required = deliveryFieldsUnlocked && isMesa;
+  tableNumber.disabled = !deliveryFieldsUnlocked || !isMesa;
 }
 
 function revealNoteField() {
@@ -365,6 +385,7 @@ function renderCart() {
   const totalItems = entries.reduce((sum, item) => sum + item.qty, 0);
 
   cartCount.textContent = totalItems;
+  document.querySelector("#openCart").setAttribute("aria-label", `Abrir carrito: ${totalItems} productos`);
   subtotalEl.textContent = formatPrice(subtotal);
   deliveryFeeEl.textContent = delivery ? formatPrice(delivery) : "Gratis";
   totalEl.textContent = formatPrice(subtotal + delivery);
@@ -382,9 +403,9 @@ function renderCart() {
         <div class="cart-controls">
           <span>${formatPrice(item.price * item.qty)}</span>
           <div class="qty-controls" aria-label="Cantidad de ${item.name}">
-            <button class="qty-button" type="button" data-decrease="${item.id}">-</button>
+            <button class="qty-button" type="button" data-decrease="${item.id}" aria-label="Reducir ${item.name}">-</button>
             <strong>${item.qty}</strong>
-            <button class="qty-button" type="button" data-increase="${item.id}">+</button>
+            <button class="qty-button" type="button" data-increase="${item.id}" aria-label="Aumentar ${item.name}" ${item.qty >= 99 ? "disabled" : ""}>+</button>
           </div>
         </div>
         <button class="remove-button" type="button" data-remove="${item.id}">Quitar</button>
@@ -394,7 +415,8 @@ function renderCart() {
 }
 
 function addToCart(id) {
-  cart[id] = (cart[id] || 0) + 1;
+  if (!menuItems.some((item) => item.id === id)) return;
+  cart[id] = Math.min((cart[id] || 0) + 1, 99);
   saveCart();
   renderCart();
   bumpCartCount();
@@ -407,7 +429,8 @@ function bumpCartCount() {
 }
 
 function changeQty(id, amount) {
-  cart[id] = (cart[id] || 0) + amount;
+  if (!menuItems.some((item) => item.id === id)) return;
+  cart[id] = Math.min((cart[id] || 0) + amount, 99);
   if (cart[id] <= 0) delete cart[id];
   saveCart();
   renderCart();
@@ -438,6 +461,10 @@ function trapFocus(event) {
 
 function openCart() {
   lastFocusedElement = document.activeElement;
+  cartPanel.inert = false;
+  document.querySelector("main").inert = true;
+  document.querySelector(".site-header").inert = true;
+  document.body.style.overflow = "hidden";
   cartPanel.classList.add("open");
   cartPanel.setAttribute("aria-hidden", "false");
   document.querySelector("#openCart").setAttribute("aria-expanded", "true");
@@ -447,6 +474,10 @@ function openCart() {
 }
 
 function closeCart() {
+  cartPanel.inert = true;
+  document.querySelector("main").inert = false;
+  document.querySelector(".site-header").inert = false;
+  document.body.style.overflow = "";
   cartPanel.classList.remove("open");
   cartPanel.setAttribute("aria-hidden", "true");
   document.querySelector("#openCart").setAttribute("aria-expanded", "false");
@@ -469,9 +500,9 @@ function placeOrder(formData) {
   const orderNumber = Math.floor(10000 + Math.random() * 90000);
   const itemList = entries.map((item) => `${item.qty} x ${item.name}`).join("<br>");
 
-  orderTitle.textContent = `Orden #${orderNumber}`;
+  orderTitle.textContent = `Simulación #${orderNumber}`;
   orderSummary.innerHTML = `
-    <strong>${escapeHtml(formData.get("customerName"))}</strong>, recibimos tu pedido para
+    <strong>${escapeHtml(formData.get("customerName"))}</strong>, esta es tu simulación para
     <strong>${describeDelivery(formData)}</strong>.<br>
     ${itemList}<br>
     <strong>Total del pedido: ${formatPrice(subtotal + delivery)}</strong>
@@ -481,6 +512,15 @@ function placeOrder(formData) {
     item.classList.toggle("active", index === 0);
   });
 
+  const labels = formData.get("deliveryMethod") === "domicilio"
+    ? ["Simulado", "En preparación", "En camino", "Entregado"]
+    : ["Simulado", "En preparación", "Listo", "Retirado"];
+  [...statusList.children].forEach((item, index) => { item.textContent = labels[index]; });
+  cart = {};
+  saveCart();
+  renderCart();
+  checkoutForm.reset();
+  updateDeliveryFields();
   orderModal.showModal();
   clearInterval(statusTimer);
 
@@ -499,7 +539,10 @@ function placeOrder(formData) {
 filters.forEach((button) => {
   button.addEventListener("click", () => {
     activeCategory = button.dataset.category;
-    filters.forEach((filter) => filter.classList.toggle("active", filter === button));
+    filters.forEach((filter) => {
+      filter.classList.toggle("active", filter === button);
+      filter.setAttribute("aria-pressed", String(filter === button));
+    });
     renderMenu();
   });
 });
@@ -556,12 +599,17 @@ checkoutForm.addEventListener("submit", (event) => {
     openCart();
     return;
   }
+  customerName.setCustomValidity(customerName.value.trim() ? "" : "Escribe un nombre.");
+  customerAddress.setCustomValidity(customerAddress.disabled || customerAddress.value.trim() ? "" : "Escribe una dirección.");
   if (!checkoutForm.reportValidity()) return;
 
   pendingOrderData = new FormData(checkoutForm);
   const note = pendingOrderData.get("orderNote");
   confirmSummary.innerHTML = `
     <dl class="confirm-list">
+      <div><dt>Productos</dt><dd>${getCartEntries().map(item => `${item.qty} × ${item.name} — ${formatPrice(item.price * item.qty)}`).join("<br>")}</dd></div>
+      <div><dt>Envío</dt><dd>${formatPrice(getDeliveryCost())}</dd></div>
+      <div><dt>Total</dt><dd>${formatPrice(getSubtotal() + getDeliveryCost())}</dd></div>
       <div><dt>Nombre</dt><dd>${escapeHtml(pendingOrderData.get("customerName"))}</dd></div>
       <div><dt>Entrega</dt><dd>${describeDelivery(pendingOrderData)}</dd></div>
       ${note ? `<div><dt>Nota</dt><dd>${escapeHtml(note)}</dd></div>` : ""}
