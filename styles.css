@@ -596,6 +596,7 @@ a {
 }
 
 .cart-panel {
+  overflow: hidden;
   position: fixed;
   inset: 0;
   z-index: 30;

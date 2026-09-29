@@ -286,9 +286,11 @@ function saveCart() {
 }
 
 function renderMenu() {
-  const visibleItems = activeCategory === "todos"
-    ? menuItems
-    : menuItems.filter((item) => item.category === activeCategory);
+  const normalize = value => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const visibleItems = menuItems.filter(item =>
+    (activeCategory === "todos" || item.category === activeCategory) &&
+    normalize(item.name + " " + item.description).includes(normalize(searchTerm)));
+  document.querySelector("#resultCount").textContent = `${visibleItems.length} opciones`;
 
   menuGrid.innerHTML = visibleItems.map((item, index) => `
     <article class="menu-card" style="animation-delay: ${index * 70}ms">
@@ -638,6 +640,18 @@ document.querySelector("#closeModal").addEventListener("click", () => {
   orderModal.close();
 });
 
+document.querySelector("#menuSearch").addEventListener("input", event => {
+  searchTerm = event.target.value;
+  renderMenu();
+});
+orderModal.addEventListener("close", () => clearInterval(statusTimer));
+confirmModal.addEventListener("cancel", () => { pendingOrderData = null; });
+[customerName, customerAddress].forEach(input => input.addEventListener("input", () => input.setCustomValidity("")));
+methodField.hidden = false;
+deliveryFieldsUnlocked = true;
+revealNoteField();
+cartPanel.inert = true;
+filters.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.category === activeCategory)));
 updateDeliveryFields();
 renderMenu();
 renderCart();
